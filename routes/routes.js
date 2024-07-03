@@ -1,6 +1,5 @@
 const { requireUser } = require('../middlewares/requireUser');
 const { registerHandler,
-    getUserDataHandler,
     getTransactionsByUserHandler,
     processTransactionHandler,
 } = require('../controllers/user.controller');
@@ -39,7 +38,7 @@ const routes = (app) => {
     app.get('/productos/:id', getProductHandler);
 
     // create product
-    app.post('/productos', createProductHandler);
+    app.post('/productos', requireUser, createProductHandler);
 
     // update product
     app.put('/productos/:id', requireUser, updateProductHandler);
@@ -49,9 +48,6 @@ const routes = (app) => {
 
     // reactivate product
     app.patch('/productos/:id', requireUser, reactivateProductHandler);
-
-    // get user data
-    app.get('/usuario', requireUser, getUserDataHandler);
 
     // products by store
     app.get('/productos/tienda/:id', getProductsByStoreHandler);

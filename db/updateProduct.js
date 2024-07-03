@@ -27,10 +27,10 @@ const updateProduct = async (id, nombre, descripcion, categoria) => {
 
     const query = `UPDATE productos SET ${placeholders.join(',')} WHERE productId = ${placeholders.length + 1}`
 
-    const { rows: id } = await pool(query, [...values, id]);
+    const { rows: updated } = await pool(query, [...values, id]);
 
-    console.log(id);
-    return id;
+    console.log(updated);
+    return updated;
 };
 
 module.exports = { updateProduct };

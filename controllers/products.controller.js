@@ -4,6 +4,7 @@ const { createProduct } = require('../db/createProduct');
 const { updateProduct } = require('../db/updateProduct');
 const { deactivateProduct } = require('../db/deactivateProduct');
 const { reactivateProduct } = require('../db/reactivateProduct');
+const { getProductsByStore } = require('../db/getProductsByStore');
 
 const getProductsHandler = async (req, res) => {
     try {

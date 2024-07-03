@@ -6,14 +6,15 @@ const getProductos = async (limits = 10, order_by = 'id_ASC', page = 1) => {
 
     switch (field) {
         case 'precio':
-            break
+            field = 'precio_min';
+            break;
         case 'stock':
             break;
         case 'nombre':
             field = 'p.nombre';
             break;
         default:
-            field = 'p.productId'
+            field = 'p.productId';
     }
 
     switch (dir) {
@@ -33,7 +34,7 @@ const getProductos = async (limits = 10, order_by = 'id_ASC', page = 1) => {
             COUNT(*) OVER()::INTEGER AS total, 
             p.productId AS id, 
             p.nombre, 
-            MIN(pub.precio) AS precio, 
+            MIN(pub.precio) AS precio_min, 
             SUM(pub.stock)::INTEGER AS stock
         FROM 
             productos p
@@ -42,7 +43,6 @@ const getProductos = async (limits = 10, order_by = 'id_ASC', page = 1) => {
         GROUP BY 
             p.productId, 
             p.nombre
-        WHERE p.isActive = TRUE
         ORDER BY ${field} ${dir}
         LIMIT ${limits}
         OFFSET ${offset}

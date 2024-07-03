@@ -6,7 +6,7 @@ const getUser = async (email, password) => {
     const { rows: [user] } = await pool.query(query, [email]);
 
     if (!bcrypt.compareSync(password, user.hash)) {
-        throw { code: 401, message: 'invalid email or password' };
+        throw { code: 401, message: 'email o contraseña inválido' };
     }
 
     return {
