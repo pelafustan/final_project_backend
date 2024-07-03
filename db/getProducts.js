@@ -40,6 +40,7 @@ const getProductos = async (limits = 10, order_by = 'id_ASC', page = 1) => {
             productos p
         JOIN 
             publicaciones pub ON p.productId = pub.productId
+        WHERE p.isActive = TRUE
         GROUP BY 
             p.productId, 
             p.nombre
