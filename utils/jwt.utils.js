@@ -31,9 +31,10 @@ const verifyAccessToken = (token) => {
 const verifyRefreshToken = (token) => {
     try {
         const decoded = jwt.verify(token, REFRESH_TOKEN_SECRET);
+        const isValid = validateSession(decoded.sessionId);
         return {
-            payload: decoded,
-            expired: false,
+            payload: isValid ? decoded.payload : null,
+            expired: isValid,
         };
     } catch (err) {
         return {
