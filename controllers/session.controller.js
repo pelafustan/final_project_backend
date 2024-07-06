@@ -1,6 +1,7 @@
 const { getUser } = require('../db/getUser');
 const { createSession } = require('../db/createSession');
-const { signAccessToken, signRefreshToken, verifyAccessToken } = require('../utils/jwt.utils');
+const { signAccessToken, signRefreshToken, verifyAccessToken, verifyRefreshToken } = require('../utils/jwt.utils');
+const { invalidateSession } = require('../db/invalidateSession');
 
 const createSessionHandler = async (req, res) => {
     const { email, password } = req.body;
@@ -38,18 +39,30 @@ const getSessionHandler = (req, res) => {
     res.send(req.user);
 };
 
-const deleteSessionHandler = (_, res) => {
-    res.cookie('accessToken', '', {
-        maxAge: 0,
-        httpOnly: true,
-    });
+const deleteSessionHandler = async (req, res) => {
+    try {
+        const { refreshToken } = req.cookies;
 
-    res.cookie('refreshToken', '', {
-        maxAge: 0,
-        httpOnly: true,
-    });
+        const { payload } = verifyRefreshToken(refreshToken);
 
-    res.send({ success: true });
+        res.cookie('accessToken', '', {
+            maxAge: 0,
+            httpOnly: true,
+        });
+
+        res.cookie('refreshToken', '', {
+            maxAge: 0,
+            httpOnly: true,
+        });
+
+        await invalidateSession(payload.sessionId);
+
+        res.send({ success: true });
+
+    } catch (err) {
+        console.log(err);
+        res.status(err.code || 500).send({ message: err.message || 'algo salió mal' });
+    }
 };
 
 module.exports = { createSessionHandler, getSessionHandler, deleteSessionHandler };
