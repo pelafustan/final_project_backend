@@ -9,7 +9,6 @@ const { getProductsByStore } = require('../db/getProductsByStore');
 const getProductsHandler = async (req, res) => {
     try {
         const { limits, order_by, page } = req.query;
-        console.log(req.query);
         const productos = await getProductos(limits, order_by, page);
         res.status(200).send(productos);
     } catch (error) {

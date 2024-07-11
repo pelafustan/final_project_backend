@@ -2,7 +2,6 @@ const { pool } = require('./connection');
 
 const getProductos = async (limits = 10, order_by = 'id_ASC', page = 1) => {
     let [field, dir] = order_by.split('_');
-    console.log(field, dir);
 
     switch (field) {
         case 'precio':

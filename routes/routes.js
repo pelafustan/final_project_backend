@@ -53,7 +53,7 @@ const routes = (app) => {
     app.get('/productos/tienda/:id', getProductsByStoreHandler);
 
     // transactions by user
-    app.get('usuario/transacciones', requireUser, getTransactionsByUserHandler);
+    app.get('/usuario/transacciones', requireUser, getTransactionsByUserHandler);
 
     // submitting transaction 
     app.post('/comprar', requireUser, processTransactionHandler);
